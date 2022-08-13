@@ -50,7 +50,21 @@ const App = () => {
     )
   }, [chart])
 
-  return <div style={{ height: 300, border: '1px solid blue' }} ref={getRef} />
+  const [width, setWidth] = useState('300px')
+  const [visible, setVisible] = useState(true)
+
+  useEffect(() => {
+    setTimeout(() => {
+      setWidth('100%')
+    }, 2000)
+  }, [])
+
+  return (
+    <>
+      <button onClick={() => setVisible(false)}>click</button>
+      {visible && <div style={{ height: 300, width, border: '1px solid blue' }} ref={getRef} />}
+    </>
+  )
 }
 
 export default App

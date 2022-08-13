@@ -1,31 +1,22 @@
+import { ResizeObserver } from '@juggle/resize-observer'
 import * as echarts from 'echarts'
 import type { RefCallback } from 'react'
 import { useCallback, useEffect, useRef, useState } from 'react'
 
+import { dispose, handleChartResize } from './helpers'
+
 const useReactEcharts = () => {
   const [, forceUpdate] = useState({})
 
-  const containerRef = useRef<HTMLElement | null>()
+  const resizeObserverRef = useRef(
+    new ResizeObserver(() => {
+      handleChartResize(chartRef.current)
+    })
+  )
+
+  const containerRef = useRef<HTMLElement | null>(null)
 
   const chartRef = useRef<echarts.ECharts>()
-
-  // resize回调，用于解绑事件
-  const resizeCbRef = useRef<() => void>()
-
-  const bindResize = () => {
-    const chart = chartRef.current
-    if (!chart) {
-      return
-    }
-    resizeCbRef.current = () => {
-      chart.resize({
-        width: 'auto',
-        height: 'auto'
-      })
-    }
-
-    window.addEventListener('resize', resizeCbRef.current)
-  }
 
   const getRef: RefCallback<HTMLElement> = useCallback(val => {
     if (!val || chartRef.current) {
@@ -40,43 +31,47 @@ const useReactEcharts = () => {
    * 解决初始化实例时，宽高不正确的问题
    * @returns
    */
-  const initEchartsInstance = () =>
-    new Promise(resolve => {
-      const _ele = containerRef.current
-      if (!_ele) {
-        return
-      }
-      echarts.init(_ele)
+  const initEchartsInstance = () => {
+    const _ele = containerRef.current
+    if (!_ele) {
+      return
+    }
+    echarts.init(_ele)
 
-      // 创建一个临时的echarts实例，用于获取实际的宽高
-      const echartsInstance = echarts.getInstanceByDom(_ele)
+    // 创建一个临时的echarts实例，用于获取实际的宽高
+    const echartsInstance = echarts.getInstanceByDom(_ele)
 
-      echartsInstance?.on('finished', () => {
-        const width = _ele.clientWidth
-        const height = _ele.clientHeight
+    echartsInstance?.on('finished', () => {
+      const width = _ele.clientWidth
+      const height = _ele.clientHeight
 
-        echarts.dispose(_ele)
+      dispose(_ele)
 
-        chartRef.current = echarts.init(_ele, undefined, {
-          width,
-          height
-        })
-        forceUpdate({})
-        resolve(chartRef.current)
+      chartRef.current = echarts.init(_ele, undefined, {
+        width,
+        height
+      })
+      forceUpdate({})
+
+      handleChartResize(chartRef.current)
+
+      // 在echarts首次动画结束后开始监听resize事件
+      chartRef.current.on('finished', () => {
+        // 多次监听同一个element不会有影响
+        resizeObserverRef.current.observe(_ele)
       })
     })
+  }
 
   useEffect(() => {
-    initEchartsInstance().then(() => {
-      bindResize()
-    })
+    initEchartsInstance()
   }, [])
 
   useEffect(() => {
+    const _temp = resizeObserverRef.current
     return () => {
-      const _ele = containerRef.current
-      _ele && echarts.dispose(_ele)
-      resizeCbRef.current && window.removeEventListener('resize', resizeCbRef.current)
+      dispose(containerRef.current)
+      _temp.disconnect()
     }
   }, [])
 
