@@ -2,9 +2,8 @@
 import { useEffect, useState } from 'react'
 
 import useEcharts from './use-react-echarts'
-
 const App = () => {
-  const { getRef, chart } = useEcharts()
+  const { ref, chart } = useEcharts<HTMLDivElement>()
 
   useEffect(() => {
     chart?.setOption(
@@ -57,12 +56,12 @@ const App = () => {
     setTimeout(() => {
       setWidth('100%')
     }, 2000)
-  }, [])
+  }, [chart])
 
   return (
     <>
       <button onClick={() => setVisible(false)}>click</button>
-      {visible && <div style={{ height: 300, width, border: '1px solid blue' }} ref={getRef} />}
+      {visible && <div style={{ height: 300, width, border: '1px solid blue' }} ref={ref} />}
     </>
   )
 }

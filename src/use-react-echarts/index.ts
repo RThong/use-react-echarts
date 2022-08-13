@@ -1,11 +1,10 @@
 import { ResizeObserver } from '@juggle/resize-observer'
 import * as echarts from 'echarts'
-import type { RefCallback } from 'react'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import { dispose, handleChartResize } from './helpers'
 
-const useReactEcharts = () => {
+const useReactEcharts = <T extends HTMLElement = any>() => {
   const [, forceUpdate] = useState({})
 
   const resizeObserverRef = useRef(
@@ -14,16 +13,9 @@ const useReactEcharts = () => {
     })
   )
 
-  const containerRef = useRef<HTMLElement | null>(null)
+  const ref = useRef<T | null>(null)
 
   const chartRef = useRef<echarts.ECharts>()
-
-  const getRef: RefCallback<HTMLElement> = useCallback(val => {
-    if (!val || chartRef.current) {
-      return
-    }
-    containerRef.current = val
-  }, [])
 
   /**
    * https://github.com/hustcc/echarts-for-react/blob/master/src/core.tsx#L88
@@ -32,7 +24,7 @@ const useReactEcharts = () => {
    * @returns
    */
   const initEchartsInstance = () => {
-    const _ele = containerRef.current
+    const _ele = ref.current
     if (!_ele) {
       return
     }
@@ -69,13 +61,14 @@ const useReactEcharts = () => {
 
   useEffect(() => {
     const _temp = resizeObserverRef.current
+    const _ele = ref.current
     return () => {
-      dispose(containerRef.current)
+      dispose(_ele)
       _temp.disconnect()
     }
   }, [])
 
-  return { getRef, chart: chartRef.current } as const
+  return { ref, chart: chartRef.current } as const
 }
 
 export default useReactEcharts
