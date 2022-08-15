@@ -11,7 +11,8 @@
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "skipLibCheck": true,
-    "lib": ["esnext", "dom"]
+    "lib": ["esnext", "dom"],
+    "removeComments": true
   },
   "include": ["src/use-react-echarts/*.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]

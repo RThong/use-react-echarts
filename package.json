@@ -9,11 +9,11 @@
   ],
   "scripts": {
     "dev": "vite",
-    "build": "npm run clean && npm run lib",
+    "build": "vite build",
     "preview": "vite preview",
     "docs": "cd ./docs && pnpm start",
-    "clean": "rimraf lib",
-    "lib": "tsc -p tsconfig.prod.json"
+    "clean": "rimraf lib dist",
+    "lib": "npm run clean && tsc -p tsconfig.prod.json"
   },
   "repository": {
     "type": "git",

@@ -1,11 +1,14 @@
-// import type * as echarts from 'echarts'
 import { useEffect, useState } from 'react'
 
 import useEcharts from './use-react-echarts'
+
 const App = () => {
-  const { ref, chart } = useEcharts<HTMLDivElement>()
+  const [ref, chart] = useEcharts<HTMLDivElement>()
 
   useEffect(() => {
+    if (!chart) {
+      return
+    }
     chart?.setOption(
       {
         tooltip: {
@@ -56,11 +59,12 @@ const App = () => {
     setTimeout(() => {
       setWidth('100%')
     }, 2000)
-  }, [chart])
+  }, [])
 
   return (
     <>
       <button onClick={() => setVisible(false)}>click</button>
+
       {visible && <div style={{ height: 300, width, border: '1px solid blue' }} ref={ref} />}
     </>
   )
