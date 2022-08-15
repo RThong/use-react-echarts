@@ -1,10 +1,11 @@
 import Link from '@docusaurus/Link'
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext'
-import HomepageFeatures from '@site/src/components/HomepageFeatures'
+import CodeBlock from '@theme/CodeBlock'
 import Layout from '@theme/Layout'
 import clsx from 'clsx'
 import React from 'react'
 
+import LineChart from '../components/LineChart'
 import styles from './index.module.css'
 
 function HomepageHeader() {
@@ -32,8 +33,49 @@ export default function Home(): JSX.Element {
       description="Description will go into a meta tag in <head />"
     >
       <HomepageHeader />
-      <main>
-        <HomepageFeatures />
+      <main className={styles.main}>
+        <h1>Installation</h1>
+        <CodeBlock language="sh" showLineNumbers>
+          pnpm add use-react-echarts -S
+        </CodeBlock>
+        <h1>Getting Started</h1>
+
+        <CodeBlock language="tsx" showLineNumbers>
+          {`import useReactEcharts from 'use-react-echarts'
+
+const LineChart = () => {
+  const [ref, chart] = useReactEcharts()
+
+  useEffect(() => {
+    if (!chart) return
+    chart.setOption({
+      grid: { top: 8, right: 8, bottom: 24, left: 36 },
+      xAxis: {
+        type: 'category',
+        data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+      },
+      yAxis: {
+        type: 'value'
+      },
+      series: [
+        {
+          data: [820, 932, 901, 934, 1290, 1330, 1320],
+          type: 'line',
+          smooth: true
+        }
+      ],
+      tooltip: {
+        trigger: 'axis'
+      }
+    })
+  }, [chart])
+
+  return <div ref={ref} style={{ height: 380 }} />
+}`}
+        </CodeBlock>
+
+        <h2>Result</h2>
+        <LineChart />
       </main>
     </Layout>
   )
