@@ -11,7 +11,7 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "docs": "cd ./docs && pnpm start",
+    "docs": "cd ./website && pnpm start",
     "clean": "rimraf lib dist",
     "lib": "npm run clean && tsc -p tsconfig.prod.json"
   },
