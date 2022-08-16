@@ -3,11 +3,39 @@
  * and scoped locally.
  */
 
+.layout {
+  width: 960px;
+  margin: 0 auto;
+}
 .heroBanner {
-  padding: 4rem 0;
-  text-align: center;
   position: relative;
   overflow: hidden;
+  color: #000;
+  background: #fff;
+  border-bottom: 1px solid #e7edf9;
+  height: 500px;
+}
+
+.heroBanner {
+}
+
+.svg {
+  position: absolute;
+  right: 10%;
+  bottom: 20px;
+  width: 500px;
+  height: 300px;
+  color: #ccc;
+}
+
+[data-theme='dark'] .svg {
+  color: #fff;
+}
+
+[data-theme='dark'] .heroBanner {
+  background: #293856;
+  color: #fff;
+  border-bottom: 1px solid #293856;
 }
 
 @media screen and (max-width: 996px) {
@@ -16,15 +44,15 @@
   }
 }
 
+.introHeader {
+  text-align: left;
+  width: 420px;
+}
+
 .buttons {
   display: flex;
   align-items: center;
-  justify-content: center;
-}
-
-.main {
-  width: 960px;
-  margin: 0 auto;
+  gap: 36px;
 }
 
 .main h1 {
