@@ -6,9 +6,6 @@ const App = () => {
   const [ref, chart] = useEcharts<HTMLDivElement>()
 
   useEffect(() => {
-    if (!chart) {
-      return
-    }
     chart?.setOption(
       {
         tooltip: {
