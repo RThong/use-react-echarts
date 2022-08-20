@@ -13,3 +13,8 @@ export const handleChartResize = (chart: echarts.ECharts | undefined) => {
 export const dispose = (ele: HTMLElement | null) => {
   ele && echarts.dispose(ele)
 }
+
+export function isFunction<T>(v: T): T extends (...args: any[]) => infer Res ? true : false
+export function isFunction(v: unknown) {
+  return typeof v === 'function'
+}
