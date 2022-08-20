@@ -71,7 +71,6 @@ const useReactEcharts = <T extends HTMLElement = any>(options: echarts.EChartsOp
       return
     }
     const _chart = val
-    console.log('【timeout】', _chart.getOption())
 
     const options = _chart.getOption()
 
