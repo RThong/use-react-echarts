@@ -13,7 +13,8 @@
     "preview": "vite preview",
     "doc": "cd ./website && pnpm start",
     "clean": "rimraf lib dist",
-    "lib": "npm run clean && tsc -p tsconfig.prod.json"
+    "lib": "npm run clean && tsc -p tsconfig.prod.json",
+    "release": "npm run lib && npm publish"
   },
   "repository": {
     "type": "git",
