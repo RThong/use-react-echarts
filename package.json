@@ -1,6 +1,6 @@
 {
   "name": "use-react-echarts",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "React hooks for Apache Echarts.",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
