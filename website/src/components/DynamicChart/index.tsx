@@ -1,12 +1,9 @@
 import type * as echarts from 'echarts'
-import React, { useEffect, useState } from 'react'
-
-import useReactEcharts from './use-react-echarts'
-
-const cloneDeep = a => JSON.parse(JSON.stringify(a))
+import cloneDeep from 'lodash.clonedeep'
+import React, { useEffect } from 'react'
+import useReactEcharts from 'use-react-echarts'
 
 const DEFAULT_OPTION: echarts.EChartsOption = {
-  animationDuration: 10000,
   title: {
     text: 'Hello use-react-echarts.'
   },
@@ -118,9 +115,7 @@ const DEFAULT_OPTION: echarts.EChartsOption = {
       xAxisIndex: 1,
       yAxisIndex: 1,
       itemStyle: {
-        normal: {
-          barBorderRadius: 4
-        }
+        borderRadius: 4
       },
       animationEasing: 'elasticOut',
       animationDelay: function (idx) {
@@ -184,7 +179,6 @@ const LineChart = () => {
       chart.setOption(option)
     }
 
-    console.log('【option】', chart.getOption())
     const timer = setInterval(() => {
       updateChart()
     }, 1000)
@@ -192,11 +186,7 @@ const LineChart = () => {
     return () => clearInterval(timer)
   }, [chart])
 
-  useEffect(() => {
-    console.log('【chart】', chart)
-  }, [chart])
-
-  return <div ref={ref} style={{ height: 380, border: '1px solid red' }} className="asd" />
+  return <div ref={ref} style={{ height: 380 }} />
 }
 
 export default LineChart

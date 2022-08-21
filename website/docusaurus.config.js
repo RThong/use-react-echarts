@@ -10,7 +10,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula')
 const config = {
   title: 'use-react-echarts',
   tagline: 'React hooks for Apache Echarts',
-  url: 'https://your-docusaurus-test-site.com',
+  url: 'https://github.com/RThong/use-react-echarts',
   baseUrl: '/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
@@ -49,25 +49,16 @@ const config = {
       })
     ]
   ],
-
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
       navbar: {
-        title: 'My Site',
         logo: {
-          alt: 'My Site Logo',
           src: 'img/logo.svg'
         },
         items: [
           {
-            type: 'doc',
-            docId: 'intro',
-            position: 'right',
-            label: 'Tutorial'
-          },
-          {
-            href: 'https://github.com/facebook/docusaurus',
+            href: 'https://github.com/RThong/use-react-echarts',
             label: 'GitHub',
             position: 'right'
           }

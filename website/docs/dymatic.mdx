@@ -1,12 +1,75 @@
+---
+sidebar_position: 2
+title: Dynamic
+hide_title: true
+---
+
+## Dynamic
+
+import Tabs from '@theme/Tabs'
+import TabItem from '@theme/TabItem'
+
+import DynamicChart from '@site/src/components/DynamicChart'
+
+<DynamicChart></DynamicChart>
+
+<Tabs>
+
+<TabItem value="tsx" label="dynamic.tsx">
+
+```tsx
 import type * as echarts from 'echarts'
-import React, { useEffect, useState } from 'react'
+import cloneDeep from 'lodash.clonedeep'
+import React, { useEffect } from 'react'
+import useReactEcharts from 'use-react-echarts'
 
-import useReactEcharts from './use-react-echarts'
+const LineChart = () => {
+  const [ref, chart] = useReactEcharts(DEFAULT_OPTION)
 
-const cloneDeep = a => JSON.parse(JSON.stringify(a))
+  useEffect(() => {
+    if (!chart) return
+    let option = DEFAULT_OPTION
+    let count = 52
 
+    const updateChart = () => {
+      const axisData = new Date().toLocaleTimeString().replace(/^\D*/, '')
+      const newOption = cloneDeep(option) // immutable
+      newOption.title.text = 'Hello use-react-echarts.' + new Date().getSeconds()
+      const data0 = newOption.series[0].data
+      const data1 = newOption.series[1].data
+
+      data0.shift()
+      data0.push(Math.round(Math.random() * 1000))
+      data1.shift()
+      data1.push((Math.random() * 10 + 5).toFixed(1) - 0)
+
+      newOption.xAxis[0].data.shift()
+      newOption.xAxis[0].data.push(axisData)
+      newOption.xAxis[1].data.shift()
+      newOption.xAxis[1].data.push(count++)
+
+      option = newOption
+      chart.setOption(option)
+    }
+
+    const timer = setInterval(() => {
+      updateChart()
+    }, 1000)
+
+    return () => clearInterval(timer)
+  }, [chart])
+
+  return <div ref={ref} style={{ height: 380 }} />
+}
+
+export default LineChart
+```
+
+</TabItem>
+<TabItem value="ts" label="DEFAULT_OPTION">
+
+```ts
 const DEFAULT_OPTION: echarts.EChartsOption = {
-  animationDuration: 10000,
   title: {
     text: 'Hello use-react-echarts.'
   },
@@ -118,9 +181,7 @@ const DEFAULT_OPTION: echarts.EChartsOption = {
       xAxisIndex: 1,
       yAxisIndex: 1,
       itemStyle: {
-        normal: {
-          barBorderRadius: 4
-        }
+        borderRadius: 4
       },
       animationEasing: 'elasticOut',
       animationDelay: function (idx) {
@@ -154,49 +215,7 @@ const DEFAULT_OPTION: echarts.EChartsOption = {
     }
   ]
 }
+```
 
-const LineChart = () => {
-  const [ref, chart] = useReactEcharts(DEFAULT_OPTION)
-
-  useEffect(() => {
-    if (!chart) return
-    let option = DEFAULT_OPTION
-    let count = 52
-
-    const updateChart = () => {
-      const axisData = new Date().toLocaleTimeString().replace(/^\D*/, '')
-      const newOption = cloneDeep(option) // immutable
-      newOption.title.text = 'Hello use-react-echarts.' + new Date().getSeconds()
-      const data0 = newOption.series[0].data
-      const data1 = newOption.series[1].data
-
-      data0.shift()
-      data0.push(Math.round(Math.random() * 1000))
-      data1.shift()
-      data1.push((Math.random() * 10 + 5).toFixed(1) - 0)
-
-      newOption.xAxis[0].data.shift()
-      newOption.xAxis[0].data.push(axisData)
-      newOption.xAxis[1].data.shift()
-      newOption.xAxis[1].data.push(count++)
-
-      option = newOption
-      chart.setOption(option)
-    }
-
-    console.log('【option】', chart.getOption())
-    const timer = setInterval(() => {
-      updateChart()
-    }, 1000)
-
-    return () => clearInterval(timer)
-  }, [chart])
-
-  useEffect(() => {
-    console.log('【chart】', chart)
-  }, [chart])
-
-  return <div ref={ref} style={{ height: 380, border: '1px solid red' }} className="asd" />
-}
-
-export default LineChart
+</TabItem>
+</Tabs>
