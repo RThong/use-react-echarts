@@ -1,12 +1,47 @@
-import type * as echarts from 'echarts'
-import React, { useEffect, useState } from 'react'
+import type { BarSeriesOption, LineSeriesOption } from 'echarts/charts'
+import { LineChart } from 'echarts/charts'
+import { BarChart } from 'echarts/charts'
+import type {
+  DatasetComponentOption,
+  GridComponentOption,
+  TitleComponentOption,
+  TooltipComponentOption
+} from 'echarts/components'
+import { VisualMapComponent } from 'echarts/components'
+import { LegendComponent, TitleComponent, ToolboxComponent } from 'echarts/components'
+import { DataZoomComponent } from 'echarts/components'
+import { GridComponent, TooltipComponent } from 'echarts/components'
+import * as echarts from 'echarts/core'
+import { CanvasRenderer } from 'echarts/renderers'
+import { useEffect } from 'react'
 
 import useReactEcharts from './use-react-echarts'
 
+echarts.use([
+  CanvasRenderer,
+  TooltipComponent,
+  GridComponent,
+  BarChart,
+  DataZoomComponent,
+  LineChart,
+  ToolboxComponent,
+  TitleComponent,
+  LegendComponent,
+  VisualMapComponent
+])
+
+type ECOption = echarts.ComposeOption<
+  | BarSeriesOption
+  | LineSeriesOption
+  | TitleComponentOption
+  | TooltipComponentOption
+  | GridComponentOption
+  | DatasetComponentOption
+>
+
 const cloneDeep = a => JSON.parse(JSON.stringify(a))
 
-const DEFAULT_OPTION: echarts.EChartsOption = {
-  animationDuration: 10000,
+const DEFAULT_OPTION: ECOption = {
   title: {
     text: 'Hello use-react-echarts.'
   },
@@ -118,9 +153,7 @@ const DEFAULT_OPTION: echarts.EChartsOption = {
       xAxisIndex: 1,
       yAxisIndex: 1,
       itemStyle: {
-        normal: {
-          barBorderRadius: 4
-        }
+        borderRadius: 4
       },
       animationEasing: 'elasticOut',
       animationDelay: function (idx) {
@@ -155,8 +188,8 @@ const DEFAULT_OPTION: echarts.EChartsOption = {
   ]
 }
 
-const LineChart = () => {
-  const [ref, chart] = useReactEcharts(DEFAULT_OPTION)
+const App = () => {
+  const [ref, chart] = useReactEcharts({ echarts, ...DEFAULT_OPTION })
 
   useEffect(() => {
     if (!chart) return
@@ -184,7 +217,6 @@ const LineChart = () => {
       chart.setOption(option)
     }
 
-    console.log('【option】', chart.getOption())
     const timer = setInterval(() => {
       updateChart()
     }, 1000)
@@ -192,11 +224,7 @@ const LineChart = () => {
     return () => clearInterval(timer)
   }, [chart])
 
-  useEffect(() => {
-    console.log('【chart】', chart)
-  }, [chart])
-
   return <div ref={ref} style={{ height: 380, border: '1px solid red' }} className="asd" />
 }
 
-export default LineChart
+export default App
