@@ -1,15 +1,34 @@
 import { ResizeObserver } from '@juggle/resize-observer'
-import * as echarts from 'echarts'
+import type * as echartsWithAll from 'echarts'
+import type * as coreEcharts from 'echarts/core'
+import type { ECBasicOption } from 'echarts/types/dist/shared'
+import type { MutableRefObject } from 'react'
 import { useEffect, useRef, useState } from 'react'
 
+import type { CurrentEcharts, CurrentEchartsInstance, ReactEchartsOptions } from './helpers'
 import { dispose, handleChartResize, isFunction } from './helpers'
 
-const useReactEcharts = <T extends HTMLElement = any>(options: echarts.EChartsOption) => {
-  // 正常使用echarts是应该通过useRef来使用唯一实例的
-  const chartRef = useRef<echarts.ECharts>()
+function useReactEcharts<T extends HTMLElement = any>(
+  options: ECBasicOption & {
+    echarts: typeof coreEcharts
+  }
+): [MutableRefObject<T | null>, coreEcharts.ECharts]
+
+function useReactEcharts<T extends HTMLElement = any>(
+  options: ECBasicOption
+): [MutableRefObject<T | null>, echartsWithAll.ECharts]
+
+function useReactEcharts<T extends HTMLElement = any>(options: ReactEchartsOptions) {
+  const { echarts, ...restOptions } = options
+
+  // 全局的echarts，由外部传入或者内部动态引入
+  const echartsRef = useRef<CurrentEcharts | undefined>(echarts)
+
+  // 正常使用echarts应该通过useRef来使用唯一实例的
+  const chartRef = useRef<CurrentEchartsInstance>()
 
   // 初始的options  通过ref保存
-  const initialOptRef = useRef(options)
+  const initialOptRef = useRef(restOptions)
 
   // ResizeObserver实例
   const resizeObserverRef = useRef(
@@ -22,7 +41,7 @@ const useReactEcharts = <T extends HTMLElement = any>(options: echarts.EChartsOp
   const ref = useRef<T | null>(null)
 
   // 外部在useEffect中使用就必须在这里用状态保存chart才能让外部感知到echart实例绑定
-  const [chart, setChart] = useState<echarts.ECharts>()
+  const [chart, setChart] = useState<CurrentEchartsInstance>()
 
   /**
    * https://github.com/hustcc/echarts-for-react/blob/master/src/core.tsx#L88
@@ -31,23 +50,26 @@ const useReactEcharts = <T extends HTMLElement = any>(options: echarts.EChartsOp
    * @returns
    */
   const initEchartsInstance = () =>
-    new Promise<echarts.ECharts>(resolve => {
+    new Promise<CurrentEchartsInstance>(resolve => {
+      const _echarts = echartsRef.current as CurrentEcharts
+
       const _ele = ref.current
       if (!_ele) {
         return
       }
-      echarts.init(_ele)
+      _echarts.init(_ele)
 
       // 创建一个临时的echarts实例，用于获取实际的宽高
-      const echartsInstance = echarts.getInstanceByDom(_ele)
+      // `as coreEcharts.ECharts` for type detection
+      const echartsInstance = _echarts.getInstanceByDom(_ele) as coreEcharts.ECharts
 
       echartsInstance?.on('finished', () => {
         const width = _ele.clientWidth
         const height = _ele.clientHeight
 
-        dispose(_ele)
+        dispose(_ele, _echarts)
 
-        chartRef.current = echarts.init(_ele, undefined, {
+        chartRef.current = _echarts.init(_ele, undefined, {
           width,
           height
         })
@@ -65,18 +87,30 @@ const useReactEcharts = <T extends HTMLElement = any>(options: echarts.EChartsOp
       })
     })
 
-  const handleResize = (val: echarts.ECharts) => {
+  /**
+   * 当没有传入echarts时，动态加载echarts
+   * @returns
+   */
+  const getEcharts = async () => {
+    if (echartsRef.current) {
+      return
+    }
+
+    echartsRef.current = (await import('echarts')) as typeof echartsWithAll
+  }
+
+  const handleResize = (val: CurrentEchartsInstance) => {
     const _ele = ref.current
     if (!_ele) {
       return
     }
     const _chart = val
 
-    const options = _chart.getOption()
+    const _options = _chart.getOption()
 
-    const _duration = options.animationDuration
+    const _duration = _options.animationDuration
 
-    const timeout = options.animation
+    const timeout = _options.animation
       ? isFunction(_duration)
         ? 1000
         : (_duration as number) ?? 1000
@@ -93,6 +127,7 @@ const useReactEcharts = <T extends HTMLElement = any>(options: echarts.EChartsOp
   useEffect(() => {
     let timer: number | undefined
     ;(async () => {
+      await getEcharts()
       const _chart = await initEchartsInstance()
       timer = handleResize(_chart)
     })()
@@ -105,13 +140,14 @@ const useReactEcharts = <T extends HTMLElement = any>(options: echarts.EChartsOp
   useEffect(() => {
     const _temp = resizeObserverRef.current
     const _ele = ref.current
+    const _echarts = echartsRef.current
     return () => {
-      dispose(_ele)
+      dispose(_ele, _echarts)
       _temp.disconnect()
     }
   }, [])
 
-  return [ref, chart] as const
+  return [ref, chart]
 }
 
 export default useReactEcharts
