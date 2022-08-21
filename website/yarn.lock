@@ -7173,10 +7173,10 @@ use-latest@^1.2.1:
   dependencies:
     use-isomorphic-layout-effect "^1.1.1"
 
-use-react-echarts@^0.4.1:
-  version "0.4.1"
-  resolved "https://registry.npmmirror.com/use-react-echarts/-/use-react-echarts-0.4.1.tgz#3a4ca0fccc58eb62fc450eafa97013b20ae6a686"
-  integrity sha512-9LGjtjixxhiDKlmLWyrzIeMPIlxwSrEJgXMj1BgBX8TbI2ePN05KM4HaSoVP0WCyAFp+S915dzfUW5REPWnJaA==
+use-react-echarts@^0.5.0:
+  version "0.5.0"
+  resolved "https://registry.npmmirror.com/use-react-echarts/-/use-react-echarts-0.5.0.tgz#9661c77297ce3ebbe80f8e6313279c82f35e4153"
+  integrity sha512-Rsiwtn9KYNrfBJK864nle/yZCtnztp5Gk1E/9ShtnJXoeeSl8cAYMEV3w76CYK0K8syOjva9SGCYWfIbHUtQkQ==
   dependencies:
     "@juggle/resize-observer" "^3.3.1"
 
