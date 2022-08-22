@@ -6,17 +6,16 @@ import type { MutableRefObject } from 'react'
 import { useEffect, useRef, useState } from 'react'
 
 import type { CurrentEcharts, CurrentEchartsInstance } from './helpers'
-import { getInitAnimationDuration } from './helpers'
-import { dispose, handleChartResize, isFunction } from './helpers'
+import { dispose, getInitAnimationDuration, handleChartResize } from './helpers'
 
 function useReactEcharts<T extends HTMLElement = any>(props: {
   options: ECBasicOption
   echarts: typeof coreEcharts
-}): [MutableRefObject<T | null>, coreEcharts.ECharts]
+}): [MutableRefObject<T | null>, coreEcharts.ECharts | undefined]
 
 function useReactEcharts<T extends HTMLElement = any>(props: {
   options: ECBasicOption
-}): [MutableRefObject<T | null>, echartsWithAll.ECharts]
+}): [MutableRefObject<T | null>, echartsWithAll.ECharts | undefined]
 
 function useReactEcharts<T extends HTMLElement = any>(props: {
   options: ECBasicOption

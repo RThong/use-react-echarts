@@ -19,7 +19,9 @@ module.exports = {
     // 自定义你的规则
     'simple-import-sort/imports': 'error',
     'simple-import-sort/exports': 'error',
-    '@typescript-eslint/consistent-type-imports': 'error'
+    '@typescript-eslint/consistent-type-imports': 'error',
+    'no-duplicate-imports': 'off',
+    '@typescript-eslint/no-duplicate-imports': 'error'
   },
   settings: {
     react: {
