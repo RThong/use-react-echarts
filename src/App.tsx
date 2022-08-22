@@ -1,16 +1,20 @@
 import type { BarSeriesOption, LineSeriesOption } from 'echarts/charts'
-import { LineChart } from 'echarts/charts'
-import { BarChart } from 'echarts/charts'
+import { BarChart, LineChart } from 'echarts/charts'
 import type {
   DatasetComponentOption,
   GridComponentOption,
   TitleComponentOption,
   TooltipComponentOption
 } from 'echarts/components'
-import { VisualMapComponent } from 'echarts/components'
-import { LegendComponent, TitleComponent, ToolboxComponent } from 'echarts/components'
-import { DataZoomComponent } from 'echarts/components'
-import { GridComponent, TooltipComponent } from 'echarts/components'
+import {
+  DataZoomComponent,
+  GridComponent,
+  LegendComponent,
+  TitleComponent,
+  ToolboxComponent,
+  TooltipComponent,
+  VisualMapComponent
+} from 'echarts/components'
 import * as echarts from 'echarts/core'
 import { CanvasRenderer } from 'echarts/renderers'
 import { useEffect } from 'react'

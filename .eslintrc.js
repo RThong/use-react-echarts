@@ -20,8 +20,7 @@ module.exports = {
     'simple-import-sort/imports': 'error',
     'simple-import-sort/exports': 'error',
     '@typescript-eslint/consistent-type-imports': 'error',
-    'no-duplicate-imports': 'off',
-    '@typescript-eslint/no-duplicate-imports': 'error'
+    'import/no-duplicates': 'error'
   },
   settings: {
     react: {
