@@ -1,6 +1,6 @@
 {
   "name": "use-react-echarts",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "React hooks for Apache Echarts.",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -14,6 +14,7 @@
     "doc": "cd ./website && pnpm start",
     "clean": "rimraf lib dist",
     "lib": "npm run clean && tsc -p tsconfig.prod.json",
+    "prod": "pnpm build && cd dist && http-server",
     "release": "npm run lib && npm publish"
   },
   "repository": {
