@@ -24,7 +24,7 @@ import React, { useEffect } from 'react'
 import useReactEcharts from 'use-react-echarts'
 
 const LineChart = () => {
-  const [ref, chart] = useReactEcharts(DEFAULT_OPTION)
+  const [ref, chart] = useReactEcharts({ options: DEFAULT_OPTION })
 
   useEffect(() => {
     if (!chart) return

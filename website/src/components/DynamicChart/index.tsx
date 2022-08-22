@@ -151,7 +151,7 @@ const DEFAULT_OPTION: echarts.EChartsOption = {
 }
 
 const LineChart = () => {
-  const [ref, chart] = useReactEcharts(DEFAULT_OPTION)
+  const [ref, chart] = useReactEcharts({ options: DEFAULT_OPTION })
 
   useEffect(() => {
     if (!chart) return

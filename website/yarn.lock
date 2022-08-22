@@ -1656,7 +1656,7 @@
 
 "@juggle/resize-observer@^3.3.1":
   version "3.4.0"
-  resolved "https://registry.npmmirror.com/@juggle/resize-observer/-/resize-observer-3.4.0.tgz#08d6c5e20cf7e4cc02fd181c4b0c225cd31dbb60"
+  resolved "https://registry.npmjs.org/@juggle/resize-observer/-/resize-observer-3.4.0.tgz#08d6c5e20cf7e4cc02fd181c4b0c225cd31dbb60"
   integrity sha512-dfLbk+PwWvFzSxwk3n5ySL0hfBog779o8h68wK/7/APo/7cgyWp5jcXockbxdk5kFRkbeXWm4Fbi9FrdN381sA==
 
 "@leichtgewicht/ip-codec@^2.0.1":
@@ -7173,10 +7173,10 @@ use-latest@^1.2.1:
   dependencies:
     use-isomorphic-layout-effect "^1.1.1"
 
-use-react-echarts@^0.5.0:
-  version "0.5.0"
-  resolved "https://registry.npmmirror.com/use-react-echarts/-/use-react-echarts-0.5.0.tgz#9661c77297ce3ebbe80f8e6313279c82f35e4153"
-  integrity sha512-Rsiwtn9KYNrfBJK864nle/yZCtnztp5Gk1E/9ShtnJXoeeSl8cAYMEV3w76CYK0K8syOjva9SGCYWfIbHUtQkQ==
+use-react-echarts@^0.7.0:
+  version "0.7.0"
+  resolved "https://registry.npmjs.org/use-react-echarts/-/use-react-echarts-0.7.0.tgz#a1ec1938b74210584284d907923019d352d77215"
+  integrity sha512-BOpj7C9A4a0XKK9fRXiwUOfLofC6+xKHkhkWM+OGOME9ikmfcIdo6ROuXZ7qBW84vaZvoTzGRlnzxRRkI8+Y3g==
   dependencies:
     "@juggle/resize-observer" "^3.3.1"
 

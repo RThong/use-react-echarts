@@ -52,7 +52,7 @@ export default function Home() {
 import useReactEcharts from 'use-react-echarts'
 
 const LineChart = () => {
-  const [ref] = useReactEcharts({
+  const [ref] = useReactEcharts({options: {
     grid: { top: 8, right: 8, bottom: 24, left: 36 },
     xAxis: {
       type: 'category',
@@ -71,7 +71,7 @@ const LineChart = () => {
     tooltip: {
       trigger: 'axis'
     }
-  })
+  }})
 
   return <div ref={ref} style={{ height: 380 }} />
 }

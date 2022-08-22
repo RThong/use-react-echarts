@@ -189,7 +189,7 @@ const DEFAULT_OPTION: ECOption = {
 }
 
 const App = () => {
-  const [ref, chart] = useReactEcharts({ echarts, ...DEFAULT_OPTION })
+  const [ref, chart] = useReactEcharts({ options: DEFAULT_OPTION })
 
   useEffect(() => {
     if (!chart) return
@@ -224,7 +224,7 @@ const App = () => {
     return () => clearInterval(timer)
   }, [chart])
 
-  return <div ref={ref} style={{ height: 380, border: '1px solid red' }} className="asd" />
+  return <div ref={ref} style={{ height: 380, border: '1px solid red' }} />
 }
 
 export default App
