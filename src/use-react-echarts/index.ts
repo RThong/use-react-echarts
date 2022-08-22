@@ -5,21 +5,24 @@ import type { ECBasicOption } from 'echarts/types/dist/shared'
 import type { MutableRefObject } from 'react'
 import { useEffect, useRef, useState } from 'react'
 
-import type { CurrentEcharts, CurrentEchartsInstance, ReactEchartsOptions } from './helpers'
+import type { CurrentEcharts, CurrentEchartsInstance } from './helpers'
+import { getInitAnimationDuration } from './helpers'
 import { dispose, handleChartResize, isFunction } from './helpers'
 
-function useReactEcharts<T extends HTMLElement = any>(
-  options: ECBasicOption & {
-    echarts: typeof coreEcharts
-  }
-): [MutableRefObject<T | null>, coreEcharts.ECharts]
-
-function useReactEcharts<T extends HTMLElement = any>(
+function useReactEcharts<T extends HTMLElement = any>(props: {
   options: ECBasicOption
-): [MutableRefObject<T | null>, echartsWithAll.ECharts]
+  echarts: typeof coreEcharts
+}): [MutableRefObject<T | null>, coreEcharts.ECharts]
 
-function useReactEcharts<T extends HTMLElement = any>(options: ReactEchartsOptions) {
-  const { echarts, ...restOptions } = options
+function useReactEcharts<T extends HTMLElement = any>(props: {
+  options: ECBasicOption
+}): [MutableRefObject<T | null>, echartsWithAll.ECharts]
+
+function useReactEcharts<T extends HTMLElement = any>(props: {
+  options: ECBasicOption
+  echarts?: typeof coreEcharts
+}) {
+  const { options, echarts } = props
 
   // 全局的echarts，由外部传入或者内部动态引入
   const echartsRef = useRef<CurrentEcharts | undefined>(echarts)
@@ -28,7 +31,7 @@ function useReactEcharts<T extends HTMLElement = any>(options: ReactEchartsOptio
   const chartRef = useRef<CurrentEchartsInstance>()
 
   // 初始的options  通过ref保存
-  const initialOptRef = useRef(restOptions)
+  const initialOptRef = useRef(options)
 
   // ResizeObserver实例
   const resizeObserverRef = useRef(
@@ -101,25 +104,19 @@ function useReactEcharts<T extends HTMLElement = any>(options: ReactEchartsOptio
 
   const handleResize = (val: CurrentEchartsInstance) => {
     const _ele = ref.current
-    if (!_ele) {
-      return
-    }
     const _chart = val
 
-    const _options = _chart.getOption()
+    if (!_ele || _chart.isDisposed()) {
+      return
+    }
 
-    const _duration = _options.animationDuration
-
-    const timeout = _options.animation
-      ? isFunction(_duration)
-        ? 1000
-        : (_duration as number) ?? 1000
-      : 0
+    const _duration = getInitAnimationDuration(_chart)
 
     // 因为直接resize会破坏初始化完成时的动画效果，所以需要延迟一段时间再resize
     const timer = window.setTimeout(() => {
       resizeObserverRef.current.observe(_ele)
-    }, timeout)
+      // 凑数，为了让动画效果结束后再绑定监听回调，否则会破坏动画
+    }, _duration)
 
     return timer
   }
