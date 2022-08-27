@@ -8,16 +8,16 @@ import { useEffect, useRef, useState } from 'react'
 import type { CurrentEcharts, CurrentEchartsInstance } from './helpers'
 import { dispose, getInitAnimationDuration, handleChartResize } from './helpers'
 
-function useReactEcharts<T extends HTMLElement = any>(props: {
+function useReactEcharts<T extends HTMLDivElement>(props: {
   options: ECBasicOption
   echarts: typeof coreEcharts
 }): [MutableRefObject<T | null>, coreEcharts.ECharts | undefined]
 
-function useReactEcharts<T extends HTMLElement = any>(props: {
+function useReactEcharts<T extends HTMLDivElement>(props: {
   options: ECBasicOption
 }): [MutableRefObject<T | null>, echartsWithAll.ECharts | undefined]
 
-function useReactEcharts<T extends HTMLElement = any>(props: {
+function useReactEcharts<T extends HTMLDivElement>(props: {
   options: ECBasicOption
   echarts?: typeof coreEcharts
 }) {

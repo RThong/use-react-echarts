@@ -193,7 +193,7 @@ const DEFAULT_OPTION: ECOption = {
 }
 
 const App = () => {
-  const [ref, chart] = useReactEcharts({ options: DEFAULT_OPTION })
+  const [ref, chart] = useReactEcharts({ echarts, options: DEFAULT_OPTION })
 
   useEffect(() => {
     if (!chart) return
